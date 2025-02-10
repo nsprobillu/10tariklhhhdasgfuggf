@@ -10,6 +10,7 @@ import emailRoutes from './routes/emails.js';
 import domainRoutes from './routes/domains.js';
 import webhookRoutes from './routes/webhook.js';
 import messageRoutes from './routes/messages.js';
+import blogRoutes from './routes/blog.js';
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ app.use(helmet({
     },
   },
   crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: "cross-origin" } // Ensure CORS headers are not blocked
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 // Add compression middleware
@@ -45,9 +46,9 @@ app.use((req, res, next) => {
 
 // Update CORS configuration
 app.use(cors({
-  origin: '*', // Allow all origins (or specify your frontend URL)
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Admin-Access'], // Add 'Admin-Access' here
+  allowedHeaders: ['Content-Type', 'Authorization', 'Admin-Access'],
   credentials: true,
   exposedHeaders: ['Content-Length', 'X-Requested-With']
 }));
@@ -78,9 +79,10 @@ app.use('/emails', emailRoutes);
 app.use('/domains', domainRoutes);
 app.use('/webhook', webhookRoutes);
 app.use('/messages', messageRoutes);
+app.use('/blog', blogRoutes);
 
 // Handle preflight requests for /admin/all
-app.options('/emails/admin/all', cors()); // Add this line to handle preflight
+app.options('/emails/admin/all', cors());
 
 // Schedule cleanup
 const CLEANUP_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
